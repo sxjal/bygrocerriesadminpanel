@@ -6,26 +6,22 @@ class AdminPanel extends StatefulWidget {
   _AdminPanelState createState() => _AdminPanelState();
 }
 
-//name
-//id
-//category
-//description
-//image
-//old price
-//price
-//rate
-//instock
-
 class _AdminPanelState extends State<AdminPanel> {
   final _formKey = GlobalKey<FormState>();
   final _productNameController = TextEditingController();
   final _productDescriptionController = TextEditingController();
+  final _productOldPriceController = TextEditingController();
+  final _productNewPriceController = TextEditingController();
+  final _productCategoryController = TextEditingController();
+  final _productImageController = TextEditingController();
+  final _productRateController = TextEditingController();
+  final _productInstockController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Panel'),
+        title: const Text('By Grocery Admin Panel'),
       ),
       body: Column(
         children: [
@@ -37,10 +33,12 @@ class _AdminPanelState extends State<AdminPanel> {
                 children: <Widget>[
                   TextFormField(
                     controller: _productNameController,
-                    decoration: InputDecoration(labelText: 'Product Name'),
+                    decoration: const InputDecoration(
+                      labelText: 'Product Name',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Product Name';
+                        return 'Product Name is required';
                       }
                       return null;
                     },
@@ -51,7 +49,7 @@ class _AdminPanelState extends State<AdminPanel> {
                         InputDecoration(labelText: 'Product Description'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Product Description';
+                        return 'Product Description is required';
                       }
                       return null;
                     },
@@ -61,7 +59,7 @@ class _AdminPanelState extends State<AdminPanel> {
                     decoration: InputDecoration(labelText: 'Old Price'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Product Old Price';
+                        return 'Please enter Product Old Price';
                       }
                       return null;
                     },
@@ -71,7 +69,7 @@ class _AdminPanelState extends State<AdminPanel> {
                     decoration: InputDecoration(labelText: 'Product New Price'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Product New Price';
+                        return 'Please enter product New Price';
                       }
                       return null;
                     },
