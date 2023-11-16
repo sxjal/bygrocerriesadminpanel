@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminPanel extends StatefulWidget {
+class NewProduct extends StatefulWidget {
   @override
-  _AdminPanelState createState() => _AdminPanelState();
+  _NewProductState createState() => _NewProductState();
 }
 
-class _AdminPanelState extends State<AdminPanel> {
+class _NewProductState extends State<NewProduct> {
   final _formKey = GlobalKey<FormState>();
   final _productNameController = TextEditingController();
   final _productDescriptionController = TextEditingController();
@@ -44,9 +44,11 @@ class _AdminPanelState extends State<AdminPanel> {
                     },
                   ),
                   TextFormField(
+                    //description
                     controller: _productDescriptionController,
-                    decoration:
-                        InputDecoration(labelText: 'Product Description'),
+                    decoration: const InputDecoration(
+                      labelText: 'Product Description',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Product Description is required';
@@ -55,8 +57,11 @@ class _AdminPanelState extends State<AdminPanel> {
                     },
                   ),
                   TextFormField(
-                    controller: _productDescriptionController,
-                    decoration: InputDecoration(labelText: 'Old Price'),
+                    //oldprice
+                    controller: _productOldPriceController,
+                    decoration: const InputDecoration(
+                      labelText: 'Old Price',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter Product Old Price';
@@ -65,11 +70,27 @@ class _AdminPanelState extends State<AdminPanel> {
                     },
                   ),
                   TextFormField(
-                    controller: _productDescriptionController,
-                    decoration: InputDecoration(labelText: 'Product New Price'),
+                    //new price
+                    controller: _productNewPriceController,
+                    decoration: const InputDecoration(
+                      labelText: 'Product New Price',
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter product New Price';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    //category
+                    controller: _productCategoryController,
+                    decoration: const InputDecoration(
+                      labelText: 'Product Category',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a category';
                       }
                       return null;
                     },
@@ -81,6 +102,12 @@ class _AdminPanelState extends State<AdminPanel> {
                           'productName': _productNameController.text,
                           'productDescription':
                               _productDescriptionController.text,
+                          'productOldPrice': _productOldPriceController.text,
+                          'productNewPrice': _productNewPriceController.text,
+                          'productCategory': _productCategoryController.text,
+                          'productImage': _productImageController.text,
+                          'productRate': _productRateController.text,
+                          'productInstock': _productInstockController.text,
                         });
                         _productNameController.clear();
                         _productDescriptionController.clear();
