@@ -18,7 +18,16 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/managecategory');
               },
-              child: const Text('Manage Category'),
+              child: const Text('Manage Categories'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/managecategory');
+              },
+              child: const Text('Manage Categories'),
             ),
           ),
           Padding(
