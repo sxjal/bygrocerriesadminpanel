@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyALQa-GR2EfTX5XJnSPENtyYpM-vWei8g0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>476040550696</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.bygrocerriesadminpanel</string>
+	<key>PROJECT_ID</key>
+	<string>bygroceryy</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bygroceryy.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:476040550696:ios:65306e75f45d0f9a53d81d</string>
+</dict>
+</plist>
