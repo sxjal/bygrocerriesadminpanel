@@ -24,7 +24,8 @@ class _HomePageState extends State<HomePage> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: const Color.fromARGB(255, 255, 156, 7)        selectedIndex: currentPageIndex,
+        indicatorColor: const Color.fromARGB(255, 255, 156, 7),
+        selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.new_releases),
@@ -38,9 +39,10 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: <Widget>[
+        const Center(
+          child: Text('ORDERs Appear here'),
+        ),
         Settings(),
-        const Center(child: Text('Notifications')),
-        const Center(child: Text('Messages')),
       ][currentPageIndex],
     );
   }
