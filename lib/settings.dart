@@ -1,3 +1,4 @@
+import 'package:bygrocerriesadminpanel/NewProduct.dart';
 import 'package:flutter/material.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -23,7 +24,7 @@ class Settings extends StatelessWidget {
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.05,
                 left: MediaQuery.of(context).size.height * 0.01,
-                bottom: MediaQuery.of(context).size.height * 0.01,
+                bottom: MediaQuery.of(context).size.height * 0.02,
               ),
               child: const Text(
                 "Welcome Back, Kunal!",
@@ -41,7 +42,11 @@ class Settings extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 GestureDetector(
-                  onTap: () => {},
+                  onTap: () => {
+                    MaterialPageRoute(
+                      builder: (context) => const NewProduct(),
+                    ),
+                  },
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.45,
