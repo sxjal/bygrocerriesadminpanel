@@ -44,11 +44,11 @@ class HomePage extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Color.fromARGB(255, 204, 20, 20),
+                        color: const Color.fromARGB(255, 204, 20, 20),
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(188, 195, 3, 179),
+                      color: const Color.fromARGB(188, 195, 3, 179),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(189, 3, 112, 195),
+                      color: const Color.fromARGB(189, 3, 112, 195),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -125,11 +125,11 @@ class HomePage extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Color.fromARGB(255, 19, 19, 19),
+                        color: const Color.fromARGB(255, 19, 19, 19),
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(187, 3, 195, 99),
+                      color: const Color.fromARGB(187, 3, 195, 99),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +165,7 @@ class HomePage extends StatelessWidget {
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(189, 3, 112, 195),
+                      color: const Color.fromARGB(189, 3, 112, 195),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -198,7 +198,7 @@ class HomePage extends StatelessWidget {
                   Navigator.pushNamed(context, '/managecategory');
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
+                  //  primary: Colors.green,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 50,
                     vertical: 20,
@@ -218,9 +218,10 @@ class HomePage extends StatelessWidget {
                   Navigator.pushNamed(context, '/manageproduct');
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: TextStyle(
+                  //  primary: Colors.blue,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  textStyle: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -235,9 +236,10 @@ class HomePage extends StatelessWidget {
                   Navigator.pushNamed(context, '/manageorder');
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: TextStyle(
+                  // primary: Colors.orange,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  textStyle: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -252,9 +254,10 @@ class HomePage extends StatelessWidget {
                   Navigator.pushNamed(context, '/manageuser');
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.purple,
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: TextStyle(
+                  //   primary: Colors.purple,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  textStyle: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
