@@ -247,24 +247,6 @@ class HomePage extends StatelessWidget {
                 child: const Text('Manage Orders'),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/manageuser');
-                },
-                style: ElevatedButton.styleFrom(
-                  //   primary: Colors.purple,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: const Text('Manage Users'),
-              ),
-            ),
           ],
         ),
       ),
