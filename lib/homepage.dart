@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 
 //home page containing manage category, manage product, manage order, manage user
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +37,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
+            //implement orders section
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
@@ -190,62 +196,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/managecategory');
-                },
-                style: ElevatedButton.styleFrom(
-                  //  primary: Colors.green,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 50,
-                    vertical: 20,
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: const Text('Manage Categories'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/manageproduct');
-                },
-                style: ElevatedButton.styleFrom(
-                  //  primary: Colors.blue,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: const Text('Manage Products'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/manageorder');
-                },
-                style: ElevatedButton.styleFrom(
-                  // primary: Colors.orange,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: const Text('Manage Orders'),
-              ),
             ),
           ],
         ),
