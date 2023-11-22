@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 
 //home page containing manage category, manage product, manage order, manage user
 
+// ignore: must_be_immutable
 class Settings extends StatelessWidget {
   int currentPageIndex = 0;
 
+  Settings({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(10),
