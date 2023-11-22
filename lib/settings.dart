@@ -23,8 +23,7 @@ class Settings extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.05,
-                left: MediaQuery.of(context).size.height * 0.01,
-                bottom: MediaQuery.of(context).size.height * 0.02,
+                left: MediaQuery.of(context).size.height * 0.0,
               ),
               child: const Text(
                 "Welcome Back, Kunal!",
@@ -43,6 +42,7 @@ class Settings extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () => {
+                    print("Manage Products"),
                     MaterialPageRoute(
                       builder: (context) => const NewProduct(),
                     ),
@@ -142,10 +142,11 @@ class Settings extends StatelessWidget {
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Icon(
                           Icons.manage_history_outlined,
-                          size: 70,
+                          size: 50,
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
@@ -178,16 +179,17 @@ class Settings extends StatelessWidget {
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Icon(
                           Icons.add_shopping_cart,
-                          size: 70,
+                          size: 50,
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
                         const Text(
-                          "Add New Category",
+                          "Add New Category", //Category",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
