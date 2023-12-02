@@ -35,18 +35,6 @@ class _AddCategoryState extends State<AddCategory> {
     return await ref.getDownloadURL();
   }
 
-  void addcategory() async {
-    if (_image != null && controller.text.isNotEmpty) {
-      String? imageUrl = await uploadImage(_image!);
-      if (imageUrl != null) {
-        await FirebaseFirestore.instance.collection('categories').add({
-          'categoryName': controller.text,
-          'categoryImage': imageUrl,
-        });
-      }
-    }
-  }
-
   File? _image;
   @override
   Widget build(BuildContext context) {
