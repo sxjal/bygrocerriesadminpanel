@@ -74,7 +74,7 @@ class _ManageCategoryState extends State<ManageCategory> {
             return data['categoryName'];
           }).toList();
 
-          return categories.isEmpty
+          return categories.isNotEmpty
               ? ListView(
                   children: categories
                       .map((e) => ListTile(
