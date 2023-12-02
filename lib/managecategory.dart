@@ -74,73 +74,85 @@ class _ManageCategoryState extends State<ManageCategory> {
             return data['categoryName'];
           }).toList();
 
-          return ListView(
-            children: categories
-                .map((e) => ListTile(
-                      title: Text(e),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () async {
-                              // Update category name
-                              TextEditingController controller =
-                                  TextEditingController(text: e);
-                              String newName = await showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Update Category Name'),
-                                      content: TextField(
-                                        controller: controller,
-                                        decoration: const InputDecoration(
-                                            hintText:
-                                                "Enter new category name"),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Update'),
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pop(controller.text);
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ) ??
-                                  "";
+          return categories.isEmpty
+              ? ListView(
+                  children: categories
+                      .map((e) => ListTile(
+                            title: Text(e),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () async {
+                                    // Update category name
+                                    TextEditingController controller =
+                                        TextEditingController(text: e);
+                                    String newName = await showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: const Text(
+                                                'Update Category Name'),
+                                            content: TextField(
+                                              controller: controller,
+                                              decoration: const InputDecoration(
+                                                  hintText:
+                                                      "Enter new category name"),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('Update'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(controller.text);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ) ??
+                                        "";
 
-                              if (newName.isNotEmpty) {
-                                // Fetch the document with the old category name
-                                var querySnapshot = await FirebaseFirestore
-                                    .instance
-                                    .collection('categories')
-                                    .where('categoryName', isEqualTo: e)
-                                    .get();
+                                    if (newName.isNotEmpty) {
+                                      // Fetch the document with the old category name
+                                      var querySnapshot =
+                                          await FirebaseFirestore.instance
+                                              .collection('categories')
+                                              .where('categoryName',
+                                                  isEqualTo: e)
+                                              .get();
 
-                                // Update the category name in each matching document
-                                for (var doc in querySnapshot.docs) {
-                                  doc.reference
-                                      .update({'categoryName': newName});
-                                }
-                              }
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              // Delete category
-                              FirebaseFirestore.instance
-                                  .collection('categories')
-                                  .doc(e)
-                                  .delete();
-                            },
-                          ),
-                        ],
-                      ),
-                    ))
-                .toList(),
-          );
+                                      // Update the category name in each matching document
+                                      for (var doc in querySnapshot.docs) {
+                                        doc.reference
+                                            .update({'categoryName': newName});
+                                      }
+                                    }
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () async {
+                                    // Fetch the document with the category name
+                                    var querySnapshot = await FirebaseFirestore
+                                        .instance
+                                        .collection('categories')
+                                        .where('categoryName', isEqualTo: e)
+                                        .get();
+
+                                    // Delete each matching document
+                                    for (var doc in querySnapshot.docs) {
+                                      doc.reference.delete();
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ))
+                      .toList(),
+                )
+              : const Center(
+                  child: Text("No Categories Found, Add few!"),
+                );
         },
       ),
     );
