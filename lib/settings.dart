@@ -1,4 +1,5 @@
 import 'package:bygrocerriesadminpanel/NewProduct.dart';
+import 'package:bygrocerriesadminpanel/addcategory.dart';
 import 'package:bygrocerriesadminpanel/managecategory.dart';
 import 'package:bygrocerriesadminpanel/settingscard.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,7 @@ class Settings extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const NewProduct(),
+                        builder: (context) => const AddCategory(),
                       ),
                     ),
                   },
@@ -99,7 +100,6 @@ class Settings extends StatelessWidget {
                   text: "Manage Categories",
                   color: const Color.fromARGB(187, 3, 195, 150),
                   onTap: () => {
-                    print("Manage Categories"),
                     Navigator.push(
                       context,
                       MaterialPageRoute(

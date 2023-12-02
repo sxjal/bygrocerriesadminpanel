@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: <Widget>[
         const Center(
-          child: Text('ORDERs Appear here'),
+          child: Text('Orders Appear here'),
         ),
         Settings(),
       ][currentPageIndex],
