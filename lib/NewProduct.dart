@@ -272,13 +272,16 @@ class _NewProductState extends State<NewProduct> {
                                 await FirebaseFirestore.instance
                                     .collection('categories')
                                     .doc(_selectedCategory)
-                                    .collection("products")
+                                    .collection(_productNameController.text)
                                     .add({
+                                  'productCategory': _selectedCategory,
                                   'productName': _productNameController.text,
                                   'productDescription':
                                       _productDescriptionController.text,
-                                  'oldPrice': _productOldPriceController.text,
-                                  'newPrice': _productNewPriceController.text,
+                                  'productoldPrice':
+                                      _productOldPriceController.text,
+                                  'productnewPrice':
+                                      _productNewPriceController.text,
                                   'productImage': imageUrl,
                                   'productRate': _productRateController.text,
                                   'productInstock': true,
