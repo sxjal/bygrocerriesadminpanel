@@ -42,71 +42,7 @@ class _ManageCategoryState extends State<ManageCategory> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () async {
-              // Add category
-              TextEditingController controller = TextEditingController();
-              File? image;
-              try {
-                image = await pickImage();
-              } catch (e) {
-                print(e);
-                return;
-              }
-
-              if (image == null) {
-                print('No image selected');
-                return;
-              }
-
-              await showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Add Category'),
-                  content: Column(
-                    children: [
-                      TextField(
-                        controller: controller,
-                        decoration: const InputDecoration(
-                          hintText: "Enter category name",
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Image.file(image!),
-                    ],
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('Add'),
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        if (controller.text.isNotEmpty) {
-                          String? imageUrl;
-                          try {
-                            imageUrl = await uploadImage(image!);
-                          } catch (e) {
-                            print(e);
-                            return;
-                          }
-
-                          if (imageUrl == null) {
-                            print('Failed to upload image');
-                            return;
-                          }
-
-                          // Add the new category with the image URL
-                          await FirebaseFirestore.instance
-                              .collection('categories')
-                              .add({
-                            'categoryName': controller.text,
-                            'imageUrl': imageUrl,
-                          });
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -121,7 +57,7 @@ class _ManageCategoryState extends State<ManageCategory> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.data == null) {
+          if (!(snapshot.hasData)) {
             return const Text("No Data found, please add some data");
           }
 
