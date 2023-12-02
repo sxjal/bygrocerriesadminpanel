@@ -89,14 +89,14 @@ class Settings extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ManageProducts(),
+                        builder: (context) => const ManageProductsScreen(),
                       ),
                     ),
                   },
                 ),
                 SettingsCard(
                   cardIcon: Icons.manage_history_outlined,
-                  text: "Manage Categories",
+                  text: "Select Category",
                   color: const Color.fromARGB(187, 3, 195, 150),
                   onTap: () => {
                     Navigator.push(
@@ -115,5 +115,3 @@ class Settings extends StatelessWidget {
     );
   }
 }
-
-
