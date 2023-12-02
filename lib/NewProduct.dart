@@ -46,13 +46,14 @@ class _NewProductState extends State<NewProduct> {
     await uploadTask.whenComplete(() => null);
     return await ref.getDownloadURL();
   }
+  //makje this a named parameter in the function alert
 
-  void alert() {
+  void alert({String error = "Please select a Category and an Image"}) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Error'),
-        content: const Text('Please select a Category and upload an Image'),
+        content: Text(error),
         actions: [
           TextButton(
             onPressed: () {
@@ -197,16 +198,20 @@ class _NewProductState extends State<NewProduct> {
                       ),
                       if (!_isSamePrice)
                         TextFormField(
-                            controller: _productNewPriceController,
-                            decoration: const InputDecoration(
-                              labelText: 'New Price',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter new price';
-                              }
-                              return null;
-                            }),
+                          controller: _productNewPriceController,
+                          decoration: const InputDecoration(
+                            labelText: 'New Price',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter new price';
+                            }
+                            return null;
+                          },
+                        ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
                       GestureDetector(
                         child: Container(
                           height: _image == null ? 100 : null,
@@ -226,30 +231,54 @@ class _NewProductState extends State<NewProduct> {
                           }
                         },
                       ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (validate(_formKey)) {
-                            FirebaseFirestore.instance
-                                .collection('products')
-                                .add({
-                              'productName': _productNameController.text,
-                              'productDescription':
-                                  _productDescriptionController.text,
-                              'productOldPrice':
-                                  _productOldPriceController.text,
-                              'productNewPrice':
-                                  _productNewPriceController.text,
-                              'productCategory': _selectedCategory,
-                              'productImage': _productImageController.text,
-                              'productRate': _productRateController.text,
-                              'productInstock': true,
-                            });
+                            try {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: LinearProgressIndicator(),
+                                  duration: Duration(
+                                      hours:
+                                          1), // Keep the SnackBar visible until manually dismissed
+                                ),
+                              );
+                              String? imageUrl = await uploadImage(_image!);
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar(); // Hide the SnackBar when the upload is complete
+                              if (imageUrl != null) {
+                                await FirebaseFirestore.instance
+                                    .collection('products')
+                                    .add(
+                                  {
+                                    'productName': _productNameController.text,
+                                    'productDescription':
+                                        _productDescriptionController.text,
+                                    'productOldPrice':
+                                        _productOldPriceController.text,
+                                    'productNewPrice':
+                                        _productNewPriceController.text,
+                                    'productCategory': _selectedCategory,
+                                    'productImage':
+                                        _productImageController.text,
+                                    'productRate': _productRateController.text,
+                                    'productInstock': true,
+                                  },
+                                );
+                              }
+                            } catch (e) {
+                              alert(error: e.toString());
+                            }
                             _productNameController.clear();
                             _productDescriptionController.clear();
                             _productOldPriceController.clear();
                             _productNewPriceController.clear();
                             _productCategoryController.clear();
                             _productRateController.clear();
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Product Added'),
@@ -260,6 +289,7 @@ class _NewProductState extends State<NewProduct> {
                               _selectedCategory = null;
                               _image = null;
                             });
+                            Navigator.of(context).pop();
                           }
                         },
                         child: const Text('Add Product'),

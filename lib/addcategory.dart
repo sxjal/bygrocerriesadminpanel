@@ -115,10 +115,12 @@ class _AddCategoryState extends State<AddCategory> {
                     if (imageUrl != null) {
                       await FirebaseFirestore.instance
                           .collection('categories')
-                          .add({
-                        'categoryName': controller.text,
-                        'categoryImage': imageUrl,
-                      });
+                          .add(
+                        {
+                          'categoryName': controller.text,
+                          'categoryImage': imageUrl,
+                        },
+                      );
                     }
                   } catch (e) {
                     print('Failed to add category: $e');
