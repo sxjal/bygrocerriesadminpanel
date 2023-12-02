@@ -1,4 +1,5 @@
 import 'package:bygrocerriesadminpanel/NewProduct.dart';
+import 'package:bygrocerriesadminpanel/managecategory.dart';
 import 'package:bygrocerriesadminpanel/settingscard.dart';
 import 'package:flutter/material.dart';
 
@@ -102,7 +103,7 @@ class Settings extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const NewProduct(),
+                        builder: (context) => const ManageCategory(),
                       ),
                     ),
                   },

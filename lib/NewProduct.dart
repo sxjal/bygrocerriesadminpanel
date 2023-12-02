@@ -24,7 +24,7 @@ class _NewProductState extends State<NewProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('By Grocery Admin Panel'),
+        title: const Text('Add New Product'),
       ),
       body: Column(
         children: [
