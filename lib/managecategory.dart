@@ -13,8 +13,8 @@ class ManageCategory extends StatefulWidget {
 
 class _ManageCategoryState extends State<ManageCategory> {
   List<dynamic> categories = [];
-
   Future<File> pickImage() async {
+    // ignore: no_leading_underscores_for_local_identifiers
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -45,7 +45,7 @@ class _ManageCategoryState extends State<ManageCategory> {
             onPressed: () async {
               // Add category
               TextEditingController controller = TextEditingController();
-              File image;
+              File? image;
               try {
                 image = await pickImage();
               } catch (e) {
@@ -53,7 +53,12 @@ class _ManageCategoryState extends State<ManageCategory> {
                 return;
               }
 
-              String categoryName = await showDialog(
+              if (image == null) {
+                print('No image selected');
+                return;
+              }
+
+              await showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Add Category'),
@@ -66,29 +71,36 @@ class _ManageCategoryState extends State<ManageCategory> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Image.file(image),
+                      Image.file(image!),
                     ],
                   ),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('Add'),
                       onPressed: () async {
-                        Navigator.of(context).pop(controller.text);
-                        String imageUrl;
-                        try {
-                          imageUrl = await uploadImage(image);
-                        } catch (e) {
-                          print(e);
-                          return;
-                        }
+                        Navigator.of(context).pop();
+                        if (controller.text.isNotEmpty) {
+                          String? imageUrl;
+                          try {
+                            imageUrl = await uploadImage(image!);
+                          } catch (e) {
+                            print(e);
+                            return;
+                          }
 
-                        // Add the new category with the image URL
-                        FirebaseFirestore.instance
-                            .collection('categories')
-                            .add({
-                          'categoryName': controller.text,
-                          'imageUrl': imageUrl,
-                        });
+                          if (imageUrl == null) {
+                            print('Failed to upload image');
+                            return;
+                          }
+
+                          // Add the new category with the image URL
+                          await FirebaseFirestore.instance
+                              .collection('categories')
+                              .add({
+                            'categoryName': controller.text,
+                            'imageUrl': imageUrl,
+                          });
+                        }
                       },
                     ),
                   ],
