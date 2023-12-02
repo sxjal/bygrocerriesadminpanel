@@ -1,4 +1,5 @@
-import 'package:bygrocerriesadminpanel/NewProduct.dart';
+import 'package:bygrocerriesadminpanel/manageproducts.dart';
+import 'package:bygrocerriesadminpanel/newproduct.dart';
 import 'package:bygrocerriesadminpanel/addcategory.dart';
 import 'package:bygrocerriesadminpanel/managecategory.dart';
 import 'package:bygrocerriesadminpanel/settingscard.dart';
@@ -28,6 +29,7 @@ class Settings extends StatelessWidget {
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.05,
                 left: MediaQuery.of(context).size.height * 0.0,
+                bottom: MediaQuery.of(context).size.height * 0.02,
               ),
               child: const Text(
                 "Welcome Back, Kunal!",
@@ -46,10 +48,9 @@ class Settings extends StatelessWidget {
               children: [
                 SettingsCard(
                   cardIcon: Icons.manage_search,
-                  text: "Add Products",
+                  text: "Add Product",
                   color: const Color.fromARGB(188, 195, 3, 179),
                   onTap: () => {
-                    print("Add Products"),
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -60,10 +61,9 @@ class Settings extends StatelessWidget {
                 ),
                 SettingsCard(
                   cardIcon: Icons.manage_search,
-                  text: "Add Categories",
+                  text: "Add Category",
                   color: const Color.fromARGB(187, 83, 3, 195),
                   onTap: () => {
-                    print("Add Categories"),
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -86,11 +86,10 @@ class Settings extends StatelessWidget {
                   text: "Manage Prdoucts",
                   color: const Color.fromARGB(187, 3, 147, 195),
                   onTap: () => {
-                    print("Manage Products"),
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const NewProduct(),
+                        builder: (context) => const ManageProducts(),
                       ),
                     ),
                   },

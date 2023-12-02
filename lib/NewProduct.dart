@@ -116,7 +116,7 @@ class _NewProductState extends State<NewProduct> {
                         _productDescriptionController.clear();
                       }
                     },
-                    child: Text('Add Product'),
+                    child: const Text('Add Product'),
                   ),
                 ],
               ),
@@ -128,7 +128,7 @@ class _NewProductState extends State<NewProduct> {
                   FirebaseFirestore.instance.collection('products').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 return ListView.builder(
@@ -140,7 +140,7 @@ class _NewProductState extends State<NewProduct> {
                       title: Text(product['productName']),
                       subtitle: Text(product['productDescription']),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
                           FirebaseFirestore.instance
                               .collection('products')
