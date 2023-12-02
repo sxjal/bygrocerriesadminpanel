@@ -88,6 +88,34 @@ class _AddCategoryState extends State<AddCategory> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.02,
             ),
+            // ElevatedButton(
+            //   onPressed: _image == null
+            //       ? () {
+            //           print("dikkat");
+            //         }
+            //       : () async {
+            //           print("uploading");
+            //           if (_image != null && controller.text.isNotEmpty) {
+            //             try {
+            //               String? imageUrl = await uploadImage(_image!);
+
+            //               if (imageUrl != null) {
+            //                 await FirebaseFirestore.instance
+            //                     .collection('categories')
+            //                     .add({
+            //                   'categoryName': controller.text,
+            //                   'categoryImage': imageUrl,
+            //                 });
+            //               }
+            //             } catch (e) {
+            //               print('Failed to add category: $e');
+            //             }
+            //           }
+
+            //           Navigator.pop(context);
+            //         },
+            //   child: const Text("Add Category"),
+            // )
             ElevatedButton(
               onPressed: _image == null
                   ? () {
@@ -97,7 +125,17 @@ class _AddCategoryState extends State<AddCategory> {
                       print("uploading");
                       if (_image != null && controller.text.isNotEmpty) {
                         try {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: LinearProgressIndicator(),
+                              duration: Duration(
+                                  hours:
+                                      1), // Keep the SnackBar visible until manually dismissed
+                            ),
+                          );
                           String? imageUrl = await uploadImage(_image!);
+                          ScaffoldMessenger.of(context)
+                              .hideCurrentSnackBar(); // Hide the SnackBar when the upload is complete
 
                           if (imageUrl != null) {
                             await FirebaseFirestore.instance
@@ -115,7 +153,7 @@ class _AddCategoryState extends State<AddCategory> {
                       Navigator.pop(context);
                     },
               child: const Text("Add Category"),
-            )
+            ),
           ],
         ),
       ),
