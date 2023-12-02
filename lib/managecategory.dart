@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class ManageCategory extends StatefulWidget {
   const ManageCategory({super.key});
@@ -8,11 +11,28 @@ class ManageCategory extends StatefulWidget {
   State<ManageCategory> createState() => _ManageCategoryState();
 }
 
-
-
-
 class _ManageCategoryState extends State<ManageCategory> {
   List<dynamic> categories = [];
+
+  Future<File> pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      return File(image.path);
+    } else {
+      throw 'No image selected';
+    }
+  }
+
+  Future<String> uploadImage(File image) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child("category_images").child(fileName);
+    UploadTask uploadTask = ref.putFile(image);
+    await uploadTask.whenComplete(() => null);
+    return await ref.getDownloadURL();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,34 +45,55 @@ class _ManageCategoryState extends State<ManageCategory> {
             onPressed: () async {
               // Add category
               TextEditingController controller = TextEditingController();
+              File image;
+              try {
+                image = await pickImage();
+              } catch (e) {
+                print(e);
+                return;
+              }
+
               String categoryName = await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Add Category'),
-                      content: TextField(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Add Category'),
+                  content: Column(
+                    children: [
+                      TextField(
                         controller: controller,
                         decoration: const InputDecoration(
-                            hintText: "Enter category name"),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('Add'),
-                          onPressed: () {
-                            Navigator.of(context).pop(controller.text);
-                          },
+                          hintText: "Enter category name",
                         ),
-                      ],
-                    ),
-                  ) ??
-                  "";
+                      ),
+                      SizedBox(height: 20),
+                      Image.file(image),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Add'),
+                      onPressed: () async {
+                        Navigator.of(context).pop(controller.text);
+                        String imageUrl;
+                        try {
+                          imageUrl = await uploadImage(image);
+                        } catch (e) {
+                          print(e);
+                          return;
+                        }
 
-              if (categoryName.isNotEmpty) {
-                // Add category to Firestore
-                FirebaseFirestore.instance
-                    .collection('categories')
-                    .doc(categoryName)
-                    .set({'categoryName': categoryName});
-              }
+                        // Add the new category with the image URL
+                        FirebaseFirestore.instance
+                            .collection('categories')
+                            .add({
+                          'categoryName': controller.text,
+                          'imageUrl': imageUrl,
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              );
             },
           ),
         ],
