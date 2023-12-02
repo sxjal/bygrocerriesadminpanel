@@ -1,3 +1,4 @@
+import 'package:bygrocerriesadminpanel/addcategory.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,7 +20,15 @@ class _ManageCategoryState extends State<ManageCategory> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              //change screen to add category screen usng material page route
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddCategory(),
+                ),
+              );
+            },
           ),
         ],
       ),
