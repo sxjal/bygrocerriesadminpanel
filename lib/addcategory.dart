@@ -122,7 +122,6 @@ class _AddCategoryState extends State<AddCategory> {
                       print("dikkat");
                     }
                   : () async {
-                      print("uploading");
                       if (_image != null && controller.text.isNotEmpty) {
                         try {
                           ScaffoldMessenger.of(context).showSnackBar(
