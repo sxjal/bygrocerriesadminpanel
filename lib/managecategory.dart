@@ -14,6 +14,46 @@ class _ManageCategoryState extends State<ManageCategory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Manage Category'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () async {
+              // Add category
+              TextEditingController controller = TextEditingController();
+              String categoryName = await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Add Category'),
+                      content: TextField(
+                        controller: controller,
+                        decoration: const InputDecoration(
+                            hintText: "Enter category name"),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Add'),
+                          onPressed: () {
+                            Navigator.of(context).pop(controller.text);
+                          },
+                        ),
+                      ],
+                    ),
+                  ) ??
+                  "";
+
+              if (categoryName.isNotEmpty) {
+                // Add category to Firestore
+                FirebaseFirestore.instance
+                    .collection('categories')
+                    .doc(categoryName)
+                    .set({'categoryName': categoryName});
+              }
+            },
+          ),
+        ],
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('categories').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -42,7 +82,7 @@ class _ManageCategoryState extends State<ManageCategory> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.edit),
+                            icon: const Icon(Icons.edit),
                             onPressed: () async {
                               // Update category name
                               TextEditingController controller =
@@ -50,16 +90,16 @@ class _ManageCategoryState extends State<ManageCategory> {
                               String newName = await showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      title: Text('Update Category Name'),
+                                      title: const Text('Update Category Name'),
                                       content: TextField(
                                         controller: controller,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                             hintText:
                                                 "Enter new category name"),
                                       ),
                                       actions: <Widget>[
                                         TextButton(
-                                          child: Text('Update'),
+                                          child: const Text('Update'),
                                           onPressed: () {
                                             Navigator.of(context)
                                                 .pop(controller.text);
@@ -87,7 +127,7 @@ class _ManageCategoryState extends State<ManageCategory> {
                             },
                           ),
                           IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             onPressed: () {
                               // Delete category
                               FirebaseFirestore.instance
