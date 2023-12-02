@@ -268,6 +268,21 @@ class _NewProductState extends State<NewProduct> {
                                     'productInstock': true,
                                   },
                                 );
+
+                                await FirebaseFirestore.instance
+                                    .collection('categories')
+                                    .doc(_selectedCategory)
+                                    .collection("products")
+                                    .add({
+                                  'productName': _productNameController.text,
+                                  'productDescription':
+                                      _productDescriptionController.text,
+                                  'oldPrice': _productOldPriceController.text,
+                                  'newPrice': _productNewPriceController.text,
+                                  'productImage': imageUrl,
+                                  'productRate': _productRateController.text,
+                                  'productInstock': true,
+                                });
                               }
                             } catch (e) {
                               alert(error: e.toString());
