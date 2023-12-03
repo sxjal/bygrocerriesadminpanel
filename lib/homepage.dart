@@ -1,3 +1,4 @@
+import 'package:bygrocerriesadminpanel/orders.dart';
 import 'package:bygrocerriesadminpanel/settings.dart';
 import 'package:flutter/material.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,9 +39,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: <Widget>[
-        const Center(
-          child: Text('Orders Appear here'),
-        ),
+        OrdersScreen(),
         Settings(),
       ][currentPageIndex],
     );
