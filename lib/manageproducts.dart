@@ -2,25 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ManageProductsScreen extends StatelessWidget {
+  const ManageProductsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Products'),
+        title: const Text('Manage Products'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('categories').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text('Something went wrong');
+            return const Text('Something went wrong');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
 
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              snapshot.data!.docs.map((e) => e.id).toList().forEach((element) {
+                FirebaseFirestore.instance
+                    .collection('categories')
+                    .doc(element)
+                    .collection('products')
+                    .snapshots()
+                    .listen((snapshot) {
+                  snapshot.docs.forEach((document) {
+                    print(document.data());
+                  });
+                });
+              });
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
               return ListTile(
@@ -46,16 +60,16 @@ class ManageProductsScreen extends StatelessWidget {
 class ProductList extends StatelessWidget {
   final String categoryId;
 
-  ProductList({required this.categoryId});
+  const ProductList({super.key, required this.categoryId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Products'),
+        title: const Text('Products'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               showSearch(
                 context: context,
@@ -73,11 +87,11 @@ class ProductList extends StatelessWidget {
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text('Something went wrong');
+            return const Text('Something went wrong');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
 
           return ListView(
@@ -105,7 +119,7 @@ class DataSearch extends SearchDelegate<String> {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -137,11 +151,11 @@ class DataSearch extends SearchDelegate<String> {
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return const Text('Something went wrong');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
 
         return ListView(

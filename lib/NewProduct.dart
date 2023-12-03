@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -25,8 +27,11 @@ class _NewProductState extends State<NewProduct> {
 
   String? _selectedCategory;
   bool _isSamePrice = true;
+  // ignore: prefer_final_fields
+  bool _isbestsell = true;
   File? _image;
   Future<File?> pickImage() async {
+    // ignore: no_leading_underscores_for_local_identifiers
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -209,6 +214,19 @@ class _NewProductState extends State<NewProduct> {
                             return null;
                           },
                         ),
+                      CheckboxListTile(
+                        title: const Text(
+                            'Do you want to add product to Best Sells?'),
+                        value: _isbestsell,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isbestsell = value!;
+                            if (_isSamePrice) {
+                              _productRateController.text = "4";
+                            }
+                          });
+                        },
+                      ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
@@ -266,6 +284,8 @@ class _NewProductState extends State<NewProduct> {
                                         _productImageController.text,
                                     'productRate': _productRateController.text,
                                     'productInstock': true,
+                                    // ignore: equal_keys_in_map
+                                    'productRate': _productRateController.text,
                                   },
                                 );
 
