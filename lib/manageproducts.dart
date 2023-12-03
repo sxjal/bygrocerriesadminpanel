@@ -1,3 +1,4 @@
+import 'package:bygrocerriesadminpanel/editproductscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -117,6 +118,15 @@ class ProductList extends StatelessWidget {
                   return ListTile(
                     title: Text(productData['productName']),
                     subtitle: Text(productData['productDescription']),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditProductScreen(
+                              productId: document.id, categoryId: categoryId),
+                        ),
+                      );
+                    },
                   );
                 }).toList(),
               );
