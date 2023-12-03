@@ -123,7 +123,10 @@ class ProductList extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => EditProductScreen(
-                              productId: document.id, categoryId: categoryId),
+                            productId: document.id,
+                            categoryId: categoryId,
+                            category: categoryName,
+                          ),
                         ),
                       );
                     },
