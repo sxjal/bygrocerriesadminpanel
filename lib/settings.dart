@@ -89,7 +89,7 @@ class Settings extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ManageProductsScreen(),
+                        builder: (context) => ManageProductsScreen(),
                       ),
                     ),
                   },
