@@ -221,7 +221,7 @@ class _NewProductState extends State<NewProduct> {
                         onChanged: (bool? value) {
                           setState(() {
                             _isbestsell = value!;
-                            if (_isSamePrice) {
+                            if (_isbestsell) {
                               _productRateController.text = "4";
                             }
                           });
