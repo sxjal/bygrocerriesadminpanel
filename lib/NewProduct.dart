@@ -38,7 +38,6 @@ class _NewProductState extends State<NewProduct> {
     if (image != null) {
       return File(image.path);
     } else {
-      print('No image selected');
       return null;
     }
   }
@@ -178,18 +177,18 @@ class _NewProductState extends State<NewProduct> {
                         //oldprice
                         controller: _productOldPriceController,
                         decoration: const InputDecoration(
-                          labelText: 'Old Price',
+                          labelText: 'Price',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Product Old Price';
+                            return 'Please enter Product Price';
                           }
                           return null;
                         },
                       ),
                       CheckboxListTile(
                         title: const Text(
-                            'Is the old price the same as the new price?'),
+                            'Is the Discounted price same as the new price?'),
                         value: _isSamePrice,
                         onChanged: (bool? value) {
                           setState(() {
@@ -223,6 +222,8 @@ class _NewProductState extends State<NewProduct> {
                             _isbestsell = value!;
                             if (_isbestsell) {
                               _productRateController.text = "4";
+                            } else {
+                              _productRateController.text = "0";
                             }
                           });
                         },
@@ -264,20 +265,34 @@ class _NewProductState extends State<NewProduct> {
                                           1), // Keep the SnackBar visible until manually dismissed
                                 ),
                               );
+
                               String? imageUrl = await uploadImage(_image!);
+                              _productImageController.text = imageUrl!;
+
+                              _isSamePrice
+                                  ? _productNewPriceController.text =
+                                      _productOldPriceController.text
+                                  : _productNewPriceController.text =
+                                      _productNewPriceController.text;
+
+                              _isbestsell
+                                  ? _productRateController.text = "4"
+                                  : _productRateController.text = "0";
+
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar(); // Hide the SnackBar when the upload is complete
-                              if (imageUrl != null) {
+                              if (_productImageController.text.isNotEmpty) {
                                 await FirebaseFirestore.instance
                                     .collection('products')
                                     .add(
                                   {
+                                    'productId': _productNameController.text,
                                     'productName': _productNameController.text,
                                     'productDescription':
                                         _productDescriptionController.text,
                                     'productOldPrice':
                                         _productOldPriceController.text,
-                                    'productNewPrice':
+                                    'productPrice':
                                         _productNewPriceController.text,
                                     'productCategory': _selectedCategory,
                                     'productImage':
@@ -288,24 +303,46 @@ class _NewProductState extends State<NewProduct> {
                                     'productRate': _productRateController.text,
                                   },
                                 );
-
+                                //add product to its category as well
                                 await FirebaseFirestore.instance
                                     .collection('categories')
                                     .doc(_selectedCategory)
-                                    .collection(_productNameController.text)
-                                    .add({
-                                  'productCategory': _selectedCategory,
-                                  'productName': _productNameController.text,
-                                  'productDescription':
-                                      _productDescriptionController.text,
-                                  'productoldPrice':
-                                      _productOldPriceController.text,
-                                  'productnewPrice':
-                                      _productNewPriceController.text,
-                                  'productImage': imageUrl,
-                                  'productRate': _productRateController.text,
-                                  'productInstock': true,
-                                });
+                                    .collection(_selectedCategory!)
+                                    .add(
+                                  {
+                                    'productId': _productNameController.text,
+                                    'productName': _productNameController.text,
+                                    'productDescription':
+                                        _productDescriptionController.text,
+                                    'productOldPrice':
+                                        _productOldPriceController.text,
+                                    'productPrice':
+                                        _productNewPriceController.text,
+                                    'productCategory': _selectedCategory,
+                                    'productImage':
+                                        _productImageController.text,
+                                    'productRate': _productRateController.text,
+                                    'productInstock': true,
+                                    // ignore: equal_keys_in_map
+                                    'productRate': _productRateController.text,
+                                  },
+                                ).then((value) => {
+                                          print(value.id.toString()),
+                                          FirebaseFirestore.instance
+                                              .collection('categories')
+                                              .doc(_selectedCategory)
+                                              .collection(_selectedCategory!)
+                                              .doc(value.id)
+                                              .update({
+                                            'productId': value.id,
+                                          }),
+                                          FirebaseFirestore.instance
+                                              .collection('products')
+                                              .doc(value.id)
+                                              .update({
+                                            'productId': value.id,
+                                          }),
+                                        });
                               }
                             } catch (e) {
                               alert(error: e.toString());
