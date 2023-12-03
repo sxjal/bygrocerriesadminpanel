@@ -282,11 +282,34 @@ class _NewProductState extends State<NewProduct> {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar(); // Hide the SnackBar when the upload is complete
                               if (_productImageController.text.isNotEmpty) {
-                                await FirebaseFirestore.instance
-                                    .collection('products')
-                                    .add(
+                                DocumentReference newProductRef =
+                                    FirebaseFirestore.instance
+                                        .collection('products')
+                                        .doc();
+
+                                String productId = newProductRef.id;
+                                String categoryName = '';
+
+                                final DocumentReference categoryRef =
+                                    FirebaseFirestore.instance
+                                        .collection('categories')
+                                        .doc(_selectedCategory);
+
+                                final DocumentSnapshot categorySnapshot =
+                                    await categoryRef.get();
+
+                                if (categorySnapshot.exists) {
+                                  Map<String, dynamic> data = categorySnapshot
+                                      .data() as Map<String, dynamic>;
+                                  categoryName = data['categoryName'];
+                                } else {
+                                  print(
+                                      'Document does not exist on the database');
+                                }
+
+                                await newProductRef.set(
                                   {
-                                    'productId': _productNameController.text,
+                                    'productId': productId,
                                     'productName': _productNameController.text,
                                     'productDescription':
                                         _productDescriptionController.text,
@@ -294,7 +317,7 @@ class _NewProductState extends State<NewProduct> {
                                         _productOldPriceController.text,
                                     'productPrice':
                                         _productNewPriceController.text,
-                                    'productCategory': _selectedCategory,
+                                    'productCategory': categoryName,
                                     'productImage':
                                         _productImageController.text,
                                     'productRate': _productRateController.text,
@@ -303,14 +326,17 @@ class _NewProductState extends State<NewProduct> {
                                     'productRate': _productRateController.text,
                                   },
                                 );
+
+                                print(categoryName);
                                 //add product to its category as well
                                 await FirebaseFirestore.instance
                                     .collection('categories')
                                     .doc(_selectedCategory)
-                                    .collection(_selectedCategory!)
-                                    .add(
+                                    .collection(categoryName)
+                                    .doc(productId)
+                                    .set(
                                   {
-                                    'productId': _productNameController.text,
+                                    'productId': productId,
                                     'productName': _productNameController.text,
                                     'productDescription':
                                         _productDescriptionController.text,
@@ -318,7 +344,7 @@ class _NewProductState extends State<NewProduct> {
                                         _productOldPriceController.text,
                                     'productPrice':
                                         _productNewPriceController.text,
-                                    'productCategory': _selectedCategory,
+                                    'productCategory': categoryName,
                                     'productImage':
                                         _productImageController.text,
                                     'productRate': _productRateController.text,
@@ -326,23 +352,7 @@ class _NewProductState extends State<NewProduct> {
                                     // ignore: equal_keys_in_map
                                     'productRate': _productRateController.text,
                                   },
-                                ).then((value) => {
-                                          print(value.id.toString()),
-                                          FirebaseFirestore.instance
-                                              .collection('categories')
-                                              .doc(_selectedCategory)
-                                              .collection(_selectedCategory!)
-                                              .doc(value.id)
-                                              .update({
-                                            'productId': value.id,
-                                          }),
-                                          FirebaseFirestore.instance
-                                              .collection('products')
-                                              .doc(value.id)
-                                              .update({
-                                            'productId': value.id,
-                                          }),
-                                        });
+                                );
                               }
                             } catch (e) {
                               alert(error: e.toString());
