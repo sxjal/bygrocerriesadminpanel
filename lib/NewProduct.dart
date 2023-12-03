@@ -327,7 +327,7 @@ class _NewProductState extends State<NewProduct> {
                                   },
                                 );
 
-                                print(categoryName);
+                                
                                 //add product to its category as well
                                 await FirebaseFirestore.instance
                                     .collection('categories')
