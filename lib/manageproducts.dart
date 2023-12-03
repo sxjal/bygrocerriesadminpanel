@@ -10,7 +10,11 @@ class ManageProductsScreen extends StatelessWidget {
         title: const Text('Manage Products'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('categories').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('categories')
+            .orderBy('categoryName')
+            .snapshots(),
+        //   stream: FirebaseFirestore.instance.collection('categories').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Something went wrong');
@@ -93,6 +97,7 @@ class ProductList extends StatelessWidget {
                 .collection('categories')
                 .doc(categoryId)
                 .collection(categoryName)
+                .orderBy("productName")
                 .snapshots(),
             builder: (BuildContext context,
                 AsyncSnapshot<QuerySnapshot> productSnapshot) {

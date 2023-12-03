@@ -101,6 +101,7 @@ class _NewProductState extends State<NewProduct> {
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('categories')
+                    .orderBy("categoryName", descending: false)
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -327,7 +328,6 @@ class _NewProductState extends State<NewProduct> {
                                   },
                                 );
 
-                                
                                 //add product to its category as well
                                 await FirebaseFirestore.instance
                                     .collection('categories')
