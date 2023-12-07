@@ -1,5 +1,4 @@
 import 'package:bygrocerriesadminpanel/orderdetailspage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -46,7 +45,7 @@ class OrdersScreen extends StatelessWidget {
                         ..sort((a, b) => b.compareTo(a));
                       var order = values[keys[i]];
                       var status = order['Status'];
-                      status = "CLOSED";
+
                       Color color = Colors.orange;
                       if (status == "OPEN") {
                         color = const Color.fromARGB(255, 255, 182, 64);
@@ -63,119 +62,124 @@ class OrdersScreen extends StatelessWidget {
                           orderId.substring(orderId.length - 4);
                       var greyOrderId =
                           orderId.substring(0, orderId.length - 4);
-
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              10), // Set the border radius
-                        ),
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        elevation: 10,
-                        margin: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        OrderDetailsPage(order: order),
-                                  ),
-                                );
-                              },
-                              title: Row(
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: 'ID: ',
+                      print("order : ${order['Items']}");
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderDetailsPage(
+                                order: order,
+                                orderId: orderId,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                10), // Set the border radius
+                          ),
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          elevation: 10,
+                          margin: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: Row(
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'ID: ',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: greyOrderId,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: Color.fromARGB(
+                                                  255, 85, 85, 85),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: visibleOrderId,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    const Icon(
+                                      Icons.currency_rupee,
+                                      size: 14,
+                                      // weight: 50,
+                                    ),
+                                    Text(
+                                      amount.toString(),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 14,
+                                        color: Color.fromARGB(255, 70, 70, 70),
                                       ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: greyOrderId,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                            color:
-                                                Color.fromARGB(255, 85, 85, 85),
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: visibleOrderId,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
+                                    ),
+                                  ],
+                                ),
+                                // subtitle: Text(
+                                //     'Items: ${order['Items'].entries.map((e) => '${e.key}: ${e.value}').join(', ')}'),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      '$time | $date',
+                                      style: const TextStyle(
+                                        color: Color.fromARGB(255, 21, 21, 21),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300,
+                                      ),
                                     ),
                                   ),
                                   const Spacer(),
-                                  const Icon(
-                                    Icons.currency_rupee,
-                                    size: 14,
-                                    // weight: 50,
-                                  ),
-                                  Text(
-                                    amount.toString(),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 70, 70, 70),
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                      right: 10.0,
+                                      bottom: 10.0,
+                                    ),
+                                    padding: const EdgeInsets.only(
+                                      top: 4.0,
+                                      bottom: 4.0,
+                                      left: 10.0,
+                                      right: 10.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: color,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      status,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
-                              // subtitle: Text(
-                              //     'Items: ${order['Items'].entries.map((e) => '${e.key}: ${e.value}').join(', ')}'),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10.0),
-                                  child: Text(
-                                    '$time | $date',
-                                    style: const TextStyle(
-                                      color: Color.fromARGB(255, 21, 21, 21),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ),
-                                const Spacer(),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                    right: 10.0,
-                                    bottom: 10.0,
-                                  ),
-                                  padding: const EdgeInsets.only(
-                                    top: 4.0,
-                                    bottom: 4.0,
-                                    left: 10.0,
-                                    right: 10.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: color,
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    status,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },
