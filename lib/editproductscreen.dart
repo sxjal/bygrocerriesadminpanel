@@ -34,6 +34,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   File? _image;
   bool _isImageChanged = false;
   bool _isSamePrice = true;
+  bool _isInStock = true;
   @override
   void initState() {
     super.initState();
@@ -88,8 +89,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _oldPriceController.text = data['productOldPrice'].toString();
       _rateController.text = data['productRate'].toString();
       // Set the text of more controllers with the corresponding data
-
       _isSamePrice = data['productPrice'] == data['productOldPrice'];
+
+      _isInStock = data['productInstock'];
     }
   }
 
@@ -124,7 +126,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       'productDescription': _descriptionController.text,
       'productPrice': double.parse(_priceController.text),
       'productImage': _isImageChanged ? newurl : _imageController.text,
-      'productInstock': bool.parse(_inStockController.text),
+      'productInstock': bool.parse(_isInStock.toString()),
       'productOldPrice': double.parse(_oldPriceController.text),
       'productRate': double.parse(_rateController.text),
       // Update more fields with the text of the corresponding controllers
@@ -152,7 +154,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   color: Colors.grey.shade200,
                 ),
                 child: _isImageChanged == false
-                    ? Image.network(_imageController.text)
+                    ? (Uri.tryParse(_imageController.text)?.isAbsolute ?? false)
+                        ? Image.network(_imageController.text)
+                        : Container()
                     : Image.file(_image!), //Image.file(_image!),
               ),
               onTap: () async {
@@ -167,10 +171,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ),
             SwitchListTile(
               title: const Text('Product In Stock'),
-              value: _inStockController.text == 'true' ? true : false,
+              value: _isInStock,
               onChanged: (bool value) {
                 setState(() {
-                  _inStockController.text = value.toString();
+                  _isInStock = value;
                 });
               },
             ),
