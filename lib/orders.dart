@@ -62,7 +62,6 @@ class OrdersScreen extends StatelessWidget {
                           orderId.substring(orderId.length - 4);
                       var greyOrderId =
                           orderId.substring(0, orderId.length - 4);
-                      print("order : ${order['Items']}");
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -130,8 +129,11 @@ class OrdersScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                // subtitle: Text(
-                                //     'Items: ${order['Items'].entries.map((e) => '${e.key}: ${e.value}').join(', ')}'),
+                                subtitle: Text(
+                                  '${order['Items'].entries.map((e) => '${e.key}').join(', ')}',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                               const SizedBox(
                                 height: 5,
