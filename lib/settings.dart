@@ -6,13 +6,9 @@ import 'package:bygrocerriesadminpanel/settingscard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//home page containing manage category, manage product, manage order, manage user
-// ignore: must_be_immutable
-
 // ignore: must_be_immutable
 class Settings extends StatefulWidget {
-  Settings({super.key});
+  const Settings({super.key});
 
   @override
   State<Settings> createState() => _SettingsState();
