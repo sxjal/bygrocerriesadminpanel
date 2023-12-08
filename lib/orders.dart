@@ -62,6 +62,10 @@ class OrdersScreen extends StatelessWidget {
                           orderId.substring(orderId.length - 4);
                       var greyOrderId =
                           orderId.substring(0, orderId.length - 4);
+                      String itemList = order['Items'].keys.toList().toString();
+                      String quantityList =
+                          order['Items'].values.toList().toString();
+
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -70,6 +74,8 @@ class OrdersScreen extends StatelessWidget {
                               builder: (context) => OrderDetailsPage(
                                 order: order,
                                 orderId: orderId,
+                                itemList: itemList,
+                                quantityList: quantityList,
                               ),
                             ),
                           );
@@ -145,7 +151,7 @@ class OrdersScreen extends StatelessWidget {
                                   Container(
                                     margin: const EdgeInsets.all(10.0),
                                     child: Text(
-                                      '$time | $date',
+                                      '$date, $time',
                                       style: const TextStyle(
                                         color: Color.fromARGB(255, 21, 21, 21),
                                         fontSize: 12,
