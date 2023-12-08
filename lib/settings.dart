@@ -3,6 +3,7 @@ import 'package:bygrocerriesadminpanel/newproduct.dart';
 import 'package:bygrocerriesadminpanel/addcategory.dart';
 import 'package:bygrocerriesadminpanel/managecategory.dart';
 import 'package:bygrocerriesadminpanel/settingscard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
@@ -108,6 +109,41 @@ class Settings extends StatelessWidget {
                   },
                 ),
               ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            const Divider(
+              color: Colors.black,
+              thickness: 1,
+            ),
+            FutureBuilder<DocumentSnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection('adminvariables')
+                  .doc('kAvueqh83Ux8bi9CA0bQ')
+                  .get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                //print(snapshot.data!.data()!['deliveryFee']);
+                if (snapshot.hasError) {
+                  return const Text("Something went wrong");
+                }
+
+                if (snapshot.hasData && !snapshot.data!.exists) {
+                  return const Text("Document does not exist");
+                }
+
+                if (snapshot.connectionState == ConnectionState.done) {
+                  Map<String, dynamic> data =
+                      snapshot.data!.data() as Map<String, dynamic>;
+
+                  return Text("Shipping: ${data['deliveryFee'].toString()}");
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ],
         ),
