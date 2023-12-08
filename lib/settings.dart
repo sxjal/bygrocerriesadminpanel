@@ -11,10 +11,17 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 
 // ignore: must_be_immutable
-class Settings extends StatelessWidget {
-  int currentPageIndex = 0;
-
+class Settings extends StatefulWidget {
   Settings({super.key});
+
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  int currentPageIndex = 0;
+  bool _isEditing = false;
+  final shippingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +143,43 @@ class Settings extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.done) {
                   Map<String, dynamic> data =
                       snapshot.data!.data() as Map<String, dynamic>;
+                  shippingController.text = data['deliveryFee'].toString();
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: shippingController,
+                          decoration: const InputDecoration(
+                            labelText: 'Shipping',
+                          ),
+                          enabled: _isEditing,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(_isEditing ? Icons.check : Icons.edit),
+                        onPressed: () {
+                          if (_isEditing) {
+                            FirebaseFirestore.instance
+                                .collection('adminvariables')
+                                .doc('kAvueqh83Ux8bi9CA0bQ')
+                                .update({
+                              'deliveryFee': int.parse(shippingController.text),
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Shipping value updated'),
+                              ),
+                            );
+                          }
+                          ;
 
-                  return Text("Shipping: ${data['deliveryFee'].toString()}");
+                          setState(() {
+                            _isEditing = !_isEditing;
+                          });
+                        },
+                      ),
+                    ],
+                  );
                 }
 
                 return const Center(
