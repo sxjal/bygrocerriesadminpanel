@@ -8,13 +8,13 @@ class OrderDetailsPage extends StatefulWidget {
   final String itemList;
   final String quantityList;
 
-  const OrderDetailsPage(
-      {Key? key,
-      required this.order,
-      required this.orderId,
-      required this.itemList,
-      required this.quantityList})
-      : super(key: key);
+  const OrderDetailsPage({
+    Key? key,
+    required this.order,
+    required this.orderId,
+    required this.itemList,
+    required this.quantityList,
+  }) : super(key: key);
 
   @override
   State<OrderDetailsPage> createState() => _OrderDetailsPageState();
@@ -29,7 +29,6 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   void update(String s) {
     setState(() {
       newStatus = s;
-      // widget.order['Status'] = newStatus;
     });
   }
 
@@ -185,41 +184,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    //   ListView.builder(
-                    //     //shrinkWrap: true,
-                    //     // physics: const NeverScrollableScrollPhysics(),
-                    //     itemCount: itemList.length,
-                    //     itemBuilder: (context, index) {
-                    //       return Column(
-                    //         children: [
-                    //           Row(
-                    //             children: [
-                    //               Text(
-                    //                 itemList[index],
-                    //                 style: const TextStyle(
-                    //                   fontSize: 16,
-                    //                 ),
-                    //               ),
-                    //               const Spacer(),
-                    //               Text(
-                    //                 itemList[index],
-                    //                 style: const TextStyle(
-                    //                   fontSize: 14,
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           const Spacer(),
-                    //           Text(
-                    //             itemList[index],
-                    //             style: const TextStyle(
-                    //               fontSize: 14,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       );
-                    //     },
-                    //   ),
+                    
                     const Divider(
                       indent: 5,
                       endIndent: 5,
