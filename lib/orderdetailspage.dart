@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class OrderDetailsPage extends StatefulWidget {
   final Map<Object?, Object?> order;
@@ -22,19 +23,31 @@ class OrderDetailsPage extends StatefulWidget {
 class _OrderDetailsPageState extends State<OrderDetailsPage> {
   // void _launch
   String? selectedStatus;
+  String newStatus = "none";
+  Color color = Colors.orange;
+
+  void update(String s) {
+    setState(() {
+      newStatus = s;
+      // widget.order['Status'] = newStatus;
+    });
+  }
+
+  Color getStatusColor(String status) {
+    switch (status) {
+      case 'OPEN':
+        return Colors.orange;
+      case 'CLOSED':
+        return Colors.green;
+      case 'RETURNED':
+        return Colors.red;
+      default:
+        return Colors.orange;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    var status = widget.order['Status'];
-    Color color = Colors.orange;
-    if (status == "OPEN") {
-      color = const Color.fromARGB(255, 255, 182, 64);
-    } else if (status == "CLOSED") {
-      color = Colors.green;
-    } else if (status == "RETURNED") {
-      color = Colors.red;
-    } // Assuming the
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -87,117 +100,51 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () async {
-                            await showDialog<String>(
+                            await showModalBottomSheet<String>(
                               context: context,
                               builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Status'),
-                                  content: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState() {
-                                            selectedStatus = "OPEN";
-                                          }
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                            top: 2.0,
-                                            bottom: 2.0,
-                                            left: 10.0,
-                                            right: 10.0,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: color,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(6),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            "OPEN",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState() {
-                                            selectedStatus = "CLOSED";
-                                          }
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                            top: 2.0,
-                                            bottom: 2.0,
-                                            left: 10.0,
-                                            right: 10.0,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: color,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(6),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            "CLOSED",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState() {
-                                            selectedStatus = "RETURNED";
-                                          }
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                            top: 2.0,
-                                            bottom: 2.0,
-                                            left: 10.0,
-                                            right: 10.0,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: color,
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(6),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            "RETURNED",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('Update'),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(selectedStatus);
-                                        setState(() {
-                                          status = selectedStatus;
-                                        });
+                                return Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: const Text('OPEN'),
+                                      onTap: () => {
+                                        Navigator.pop(context),
+                                        update('OPEN'),
+                                      },
+                                    ),
+                                    ListTile(
+                                      title: const Text('CLOSED'),
+                                      onTap: () => {
+                                        Navigator.pop(context),
+                                        update('CLOSED'),
+                                      }, //Navigator.pop(context, 'CLOSED'),
+                                    ),
+                                    ListTile(
+                                      title: const Text('RETURNED'),
+                                      onTap: () => {
+                                        Navigator.pop(context),
+                                        update('RETURNED'),
                                       },
                                     ),
                                   ],
                                 );
                               },
                             );
+                            if (newStatus != "none") {
+                              await FirebaseDatabase.instance
+                                  .ref()
+                                  .child('orders')
+                                  .child(widget.orderId)
+                                  .update({
+                                'Status': newStatus,
+                              });
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Order status updated'),
+                                ),
+                              );
+                            }
                           },
                           child: Container(
                             padding: const EdgeInsets.only(
@@ -207,13 +154,19 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                               right: 10.0,
                             ),
                             decoration: BoxDecoration(
-                              color: color,
+                              color: getStatusColor(
+                                newStatus == "none"
+                                    ? widget.order['Status'].toString()
+                                    : newStatus,
+                              ),
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(6),
                               ),
                             ),
                             child: Text(
-                              widget.order['Status'] as String,
+                              newStatus == "none"
+                                  ? widget.order['Status'].toString()
+                                  : newStatus,
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
